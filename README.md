@@ -299,7 +299,7 @@ Create a PostgreSQL database and user:
 
 ```sql
 CREATE DATABASE airbnb_census_db;
-CREATE USER airflow_user WITH PASSWORD 'your_password';
+CREATE USER airflow_user WITH PASSWORD '******';
 GRANT ALL PRIVILEGES ON DATABASE airbnb_census_db TO airflow_user;
 ```
 
@@ -331,7 +331,7 @@ airbnb_census:
       type: postgres
       host: localhost
       user: airflow_user
-      password: your_password
+      password: *******
       port: 5432
       dbname: airbnb_census_db
       schema: analytics
@@ -553,6 +553,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Medallion Architecture Overview](https://www.databricks.com/glossary/medallion-architecture)
 
 ---
-
-**Built with ❤️ for data engineering excellence**
 
