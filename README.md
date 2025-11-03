@@ -92,8 +92,9 @@ This pipeline implements the **Medallion Architecture** pattern, organizing data
 |----------|-----------|---------|
 | **🔄 Orchestration** | [Apache Airflow](https://airflow.apache.org/) | Workflow scheduling and task orchestration |
 | **🔧 Transformation** | [dbt (data build tool)](https://www.getdbt.com/) | SQL-based transformations and data modeling |
-| **💾 Data Warehouse** | [PostgreSQL](https://www.postgresql.org/) | Relational database for data storage |
-| **☁️ Cloud Platform** | [Google Cloud Platform (GCP)](https://cloud.google.com/) | Cloud infrastructure and storage |
+| **💾 Data Warehouse** | [PostgreSQL](https://www.postgresql.org/) | Relational database for data storage and warehousing |
+| **☁️ Cloud Platform** | [Google Cloud Platform (GCP)](https://cloud.google.com/) | Cloud infrastructure, storage (Cloud Storage), and compute services |
+| **🖥️ Database Tool** | [DBeaver](https://dbeaver.io/) | Universal database management and SQL client for PostgreSQL |
 | **🐍 Programming** | Python 3.9+ | Data processing and automation scripts |
 | **📊 Data Sources** | Airbnb Listings API, 2016 Australian Census | Raw data sources |
 
@@ -103,6 +104,14 @@ This pipeline implements the **Medallion Architecture** pattern, organizing data
 - `sqlalchemy` - Database connectivity
 - `apache-airflow` - Workflow orchestration
 - `dbt-postgres` - dbt adapter for PostgreSQL
+- `psycopg2` - PostgreSQL database adapter for Python
+- `google-cloud-storage` - GCP Cloud Storage client library
+
+### Tools & Platforms
+
+- **GCP (Google Cloud Platform)**: Used for cloud storage (GCS buckets), hosting data files, and scalable infrastructure
+- **PostgreSQL**: Enterprise-grade relational database system for data warehousing, supporting complex queries and ACID transactions
+- **DBeaver**: Database administration tool for connecting to PostgreSQL, writing SQL queries, and managing database schemas
 
 ---
 
@@ -176,9 +185,10 @@ This pipeline implements the **Medallion Architecture** pattern, organizing data
 
 1. **Bronze Layer Processing**
    - Airflow DAG `airbnb_census_bronze.py` executes
-   - Loads raw CSV files into PostgreSQL `bronze` schema
+   - Loads raw CSV files from **GCP Cloud Storage** into PostgreSQL `bronze` schema
    - Applies basic partitioning by month/LGA
    - Preserves original data without transformation
+   - Uses **DBeaver** or SQL client to monitor and validate data ingestion
 
 2. **Silver Layer Transformation**
    - Airflow DAG triggers dbt execution
@@ -295,15 +305,42 @@ pip install pandas sqlalchemy psycopg2-binary
 
 ### 4. Configure PostgreSQL Database
 
-Create a PostgreSQL database and user:
+Create a PostgreSQL database and user. You can use **DBeaver** or `psql` command-line tool:
 
 ```sql
 CREATE DATABASE airbnb_census_db;
-CREATE USER airflow_user WITH PASSWORD '******';
+CREATE USER airflow_user WITH PASSWORD 'your_password';
 GRANT ALL PRIVILEGES ON DATABASE airbnb_census_db TO airflow_user;
 ```
 
-### 5. Configure Airflow
+**Using DBeaver:**
+1. Open DBeaver and create a new PostgreSQL connection
+2. Connect to your local or remote PostgreSQL server
+3. Execute the above SQL commands in the SQL editor
+4. Test the connection and verify database creation
+
+### 5. Configure GCP (Google Cloud Platform)
+
+If using GCP Cloud Storage for source data:
+
+1. **Install Google Cloud SDK:**
+   ```bash
+   pip install google-cloud-storage
+   ```
+
+2. **Set up GCP credentials:**
+   ```bash
+   export GOOGLE_APPLICATION_CREDENTIALS="path/to/your/service-account-key.json"
+   ```
+
+3. **Create GCS bucket** (if not already created):
+   ```bash
+   gsutil mb gs://your-bucket-name
+   ```
+
+4. **Upload source CSV files to GCS** (or configure Airflow DAG to read from GCS)
+
+### 6. Configure Airflow
 
 Initialize Airflow:
 
@@ -319,7 +356,7 @@ airflow users create \
     --password admin
 ```
 
-### 6. Configure dbt
+### 7. Configure dbt
 
 Edit `dbt/profiles.yml` (create if it doesn't exist):
 
@@ -343,6 +380,11 @@ Test connection:
 cd dbt
 dbt debug
 ```
+
+**Using DBeaver to verify PostgreSQL connection:**
+1. Connect to `airbnb_census_db` database in DBeaver
+2. Verify schemas: `bronze`, `silver`, `gold`
+3. Run test queries to confirm database connectivity
 
 ---
 
