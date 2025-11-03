@@ -578,7 +578,7 @@ LIMIT 10;
 ## 👤 Credits
 
 **Satyam Palkar (25217353)**  
-**Master of IT (Data Analytics)**  
+**Master of Data Science and Innovation (Data Analytics)**  
 **University of Technology Sydney**
 
 ---
