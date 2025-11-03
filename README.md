@@ -259,11 +259,13 @@ airbnb-census-elt-pipeline/
 Before setting up the project, ensure you have:
 
 - **Python 3.9+** installed
-- **PostgreSQL 12+** database server
+- **PostgreSQL 12+** database server (local or remote)
 - **Apache Airflow 2.x** (can be installed via pip)
 - **dbt-core** and **dbt-postgres** installed
+- **DBeaver** (or similar database client) for PostgreSQL management
 - **Git** for version control
-- **Access to GCP** (if using cloud storage)
+- **Google Cloud Platform (GCP)** account and access (for Cloud Storage)
+- **GCP Cloud Storage** bucket for source data files
 
 ### System Requirements
 
