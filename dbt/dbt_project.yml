@@ -1,0 +1,26 @@
+name: 'airbnb_dbt_project'
+version: '1.0'
+config-version: 2
+
+profile: 'user'
+
+model-paths: ["models"]
+snapshot-paths: ["snapshots"]
+macro-paths: ["macros"]
+
+models:
+  airbnb_dbt_project:
+    bronze:
+      +schema: bronze
+      +materialized: view
+    silver:
+      +schema: silver
+      +materialized: table
+    gold:
+      +schema: gold
+      +materialized: table
+      datamart:
+        +materialized: view
+
+snapshots:
+  +target_schema: snapshots

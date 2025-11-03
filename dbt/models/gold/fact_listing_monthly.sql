@@ -1,0 +1,1 @@
+-- Fact table for monthly listing metrics

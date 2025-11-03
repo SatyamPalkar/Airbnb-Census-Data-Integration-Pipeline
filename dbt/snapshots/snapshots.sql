@@ -1,0 +1,1 @@
+-- dbt snapshots for SCD Type 2 tracking

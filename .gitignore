@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# Airflow
+airflow_home/
+airflow.db
+airflow-webserver.pid
+logs/
+
+# dbt
+dbt_packages/
+target/
+profiles.yml
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data files (keep structure, ignore large files)
+*.csv
+!dbt/seeds/*.csv
+data/*.csv
+!data/.gitkeep
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+
+# Project specific
+raw_data/
+*.zip
+Visualizations/
+
