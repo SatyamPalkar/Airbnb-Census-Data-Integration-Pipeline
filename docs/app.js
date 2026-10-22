@@ -39,13 +39,13 @@ function trend(rows) {
   const max = Math.max(...valid.map(p => p.mean)) * 1.15;
   const x = index => 55 + index * 510 / Math.max(points.length - 1, 1);
   const y = value => 210 - value * 180 / max;
-  let body = [0, .5, 1].map(f => `<line x1="55" x2="565" y1="${y(max*f)}" y2="${y(max*f)}" stroke="#d8dcd0"/><text x="45" y="${y(max*f)+4}" text-anchor="end" font-size="11" fill="#6b746a">${Math.round(max*f)}</text>`).join('');
+  let body = [0, .5, 1].map(f => `<line x1="55" x2="565" y1="${y(max*f)}" y2="${y(max*f)}" stroke="#e2e8f0"/><text x="45" y="${y(max*f)+4}" text-anchor="end" font-size="11" fill="#64748b">${Math.round(max*f)}</text>`).join('');
   let previous = null;
   for (const [index, p] of points.entries()) {
     if (!p.count) { previous = null; continue; }
-    if (previous !== null) body += `<line x1="${x(previous)}" y1="${y(points[previous].mean)}" x2="${x(index)}" y2="${y(p.mean)}" stroke="#32674f" stroke-width="3"/>`;
-    body += `<circle cx="${x(index)}" cy="${y(p.mean)}" r="4" fill="#32674f"><title>${monthName(p.month)}: ${money(p.mean)}, ${integer(p.count)} records</title></circle>`;
-    if (index % 3 === 0 || index === points.length-1) body += `<text x="${x(index)}" y="235" text-anchor="middle" font-size="10" fill="#6b746a">${monthName(p.month)}</text>`;
+    if (previous !== null) body += `<line x1="${x(previous)}" y1="${y(points[previous].mean)}" x2="${x(index)}" y2="${y(p.mean)}" stroke="#3464e8" stroke-width="3"/>`;
+    body += `<circle cx="${x(index)}" cy="${y(p.mean)}" r="4" fill="#3464e8"><title>${monthName(p.month)}: ${money(p.mean)}, ${integer(p.count)} records</title></circle>`;
+    if (index % 3 === 0 || index === points.length-1) body += `<text x="${x(index)}" y="235" text-anchor="middle" font-size="10" fill="#64748b">${monthName(p.month)}</text>`;
     previous = index;
   }
   svg('trend', body, 'Mean asking price over all months for the selected area and room type');
@@ -71,9 +71,9 @@ function scatter(regions) {
   const maxPrice = Math.max(...points.map(r => r.mean))*1.15;
   const x = age => 60 + (age-minAge)/(maxAge-minAge)*490;
   const y = price => 210-price/maxPrice*170;
-  let body = `<line x1="60" x2="560" y1="210" y2="210" stroke="#b7c1b1"/><line x1="60" x2="60" y1="30" y2="210" stroke="#b7c1b1"/>`;
-  for (let i=0;i<3;i++) { const age=minAge+(maxAge-minAge)*i/2; body+=`<text x="${x(age)}" y="230" text-anchor="middle" font-size="11" fill="#6b746a">${age.toFixed(0)} yrs</text>`; const price=maxPrice*i/2; body+=`<text x="50" y="${y(price)+4}" text-anchor="end" font-size="11" fill="#6b746a">$${Math.round(price)}</text>`; }
-  body += points.map(r => `<circle cx="${x(r.age)}" cy="${y(r.mean)}" r="${Math.min(15,4+Math.sqrt(r.count)/20)}" fill="#32674f" opacity=".65"><title>${escape(r.name)}: age ${r.age}, ${money(r.mean)}, ${integer(r.count)} records</title></circle>`).join('');
+  let body = `<line x1="60" x2="560" y1="210" y2="210" stroke="#cbd5e1"/><line x1="60" x2="60" y1="30" y2="210" stroke="#cbd5e1"/>`;
+  for (let i=0;i<3;i++) { const age=minAge+(maxAge-minAge)*i/2; body+=`<text x="${x(age)}" y="230" text-anchor="middle" font-size="11" fill="#64748b">${age.toFixed(0)} yrs</text>`; const price=maxPrice*i/2; body+=`<text x="50" y="${y(price)+4}" text-anchor="end" font-size="11" fill="#64748b">$${Math.round(price)}</text>`; }
+  body += points.map(r => `<circle cx="${x(r.age)}" cy="${y(r.mean)}" r="${Math.min(15,4+Math.sqrt(r.count)/20)}" fill="#8463d8" opacity=".65"><title>${escape(r.name)}: age ${r.age}, ${money(r.mean)}, ${integer(r.count)} records</title></circle>`).join('');
   svg('scatter', body, 'LGA mean asking price against 2016 median resident age; bubble size reflects record count');
   const mx=points.reduce((s,r)=>s+r.age,0)/points.length, my=points.reduce((s,r)=>s+r.mean,0)/points.length;
   const cov=points.reduce((s,r)=>s+(r.age-mx)*(r.mean-my),0), dx=points.reduce((s,r)=>s+(r.age-mx)**2,0),dy=points.reduce((s,r)=>s+(r.mean-my)**2,0);
