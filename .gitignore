@@ -55,6 +55,8 @@ data/*.csv
 
 # Project specific
 raw_data/
+data/*.sqlite
+data/*.sqlite-*
 *.zip
 Visualizations/
 
