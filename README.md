@@ -1,5 +1,7 @@
 # Rental Atlas — Airbnb × Census
 
+**[Explore the live dashboard](https://satyampalkar.github.io/Airbnb-Census-Data-Integration-Pipeline/)**
+
 A reproducible historical NSW market explorer with real listing snapshots,
 explicit data-quality checks, SQLite analytical tables and a free static dashboard.
 
